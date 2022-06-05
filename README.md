@@ -95,7 +95,7 @@ mvn clean install <br />
 java -jar target/tracex-1.0.jar <br />
 
 ## Docker
-In case you want to use Docker. Run the following command: (Need to run installation first) <br />
+In case you want to use Docker. Run the following command: (Need to run Installation Section first) <br />
 docker build -t tracex-application . <br />
 docker-compose up -d
 
