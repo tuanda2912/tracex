@@ -1,5 +1,7 @@
 package com.tyler.tracex.domain.message;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.io.Serializable;
 
 /**
@@ -10,9 +12,17 @@ import java.io.Serializable;
  * @since 03/11/2020
  */
 public class BaseMessage implements Serializable {
+
+    @Schema(description = "Status code of request")
     private String code;
+
+    @Schema(description = "Boolean check if success")
     private boolean success;
+
+    @Schema(description = "Description if needed")
     private String description;
+
+    @Schema(description = "Message success or error")
     private String message;
 
     public BaseMessage() {
