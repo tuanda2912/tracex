@@ -83,7 +83,8 @@
 [//]: # (Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.)
 
 ## Name
-Tracex Spring Boot Sample Project
+Tracex Spring Boot Sample Project <br />
+Example deploy for this: http://ec2-54-236-196-206.compute-1.amazonaws.com:8080/swagger-ui/index.html#/
 
 ## Description
 Just a sample Spring Boot Project for Tracex
@@ -91,7 +92,12 @@ Just a sample Spring Boot Project for Tracex
 ## Installation
 Install JDK First then Maven. Using the following command to run. <br />
 mvn clean install <br />
-java -jar target/tracex-1.0.jar
+java -jar target/tracex-1.0.jar <br />
+
+## Docker
+In case you want to use Docker. Run the following command: (Need to run installation first) <br />
+docker build -t tracex-application . <br />
+docker-compose up -d
 
 ## Support
 Email me at: tuanda2912.forwork@gmail.com
@@ -103,4 +109,8 @@ I'm open to contribution for everyone
 Free of course.
 
 ## Project status
-Still completing every day.
+Still completing every day. <br />
+Next: Will import Spring security for this. <br />
+
+
+## Have a Nice Day Guys!!!
