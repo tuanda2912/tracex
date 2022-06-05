@@ -7,10 +7,7 @@ import org.springframework.util.CollectionUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class BatteryCustomRepositoryImpl implements BatteryCustomRepository {
@@ -22,10 +19,18 @@ public class BatteryCustomRepositoryImpl implements BatteryCustomRepository {
     public Map<String, Object> getTotalRowAndAvgWatt(Integer fromPostcode, Integer toPostCode) {
 
         StringBuilder strQuery = new StringBuilder();
-        strQuery.append("SELECT COUNT(*) as total, AVG(WATT_CAPACITY) as avg FROM BATTERY WHERE POST_CODE >= :fromPostCode AND POST_CODE <= :toPostCode ");
+        strQuery.append("SELECT COUNT(*) as total, AVG(WATT_CAPACITY) as avg FROM BATTERY WHERE 1=1 ");
+        Map<String, Integer> mapping = new HashMap<>();
+        if(Objects.nonNull(fromPostcode)) {
+            strQuery.append("AND POST_CODE >= :fromPostCode ");
+            mapping.put("fromPostCode", fromPostcode);
+        }
+        if(Objects.nonNull(toPostCode)) {
+            strQuery.append("AND POST_CODE <= :toPostCode ");
+            mapping.put("toPostCode", toPostCode);
+        }
         Query query = em.createNativeQuery(strQuery.toString());
-        query.setParameter("fromPostCode", fromPostcode);
-        query.setParameter("toPostCode", toPostCode);
+        mapping.forEach(query::setParameter);
         List<Object[]> results = query.getResultList();
         if(CollectionUtils.isEmpty(results)) {
             return null;

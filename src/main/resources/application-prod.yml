@@ -5,12 +5,12 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-  #      ddl-auto: update
+#      ddl-auto: update
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/vcc-hc?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8_bin
+    url: jdbc:mariadb://localhost:3306/test-node?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8_bin
     driverClassName: org.mariadb.jdbc.Driver
-    username: unikom
+    username: root
     password: ENC(HrwmNpdv5zJ9hUiK6tEw1zNTlCaM53Hd)
     hikari:
       idle-timeout: 60000
