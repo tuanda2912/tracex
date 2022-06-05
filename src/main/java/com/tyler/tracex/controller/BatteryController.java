@@ -25,7 +25,7 @@ public class BatteryController extends BaseController {
     }
 
     @PostMapping(value = "/get-battery-by-postcode")
-    public ResponseEntity<?> getBatteryByPostcode(@RequestBody GetNameBatteryByPostcodeInput input) {
+    public ResponseEntity<?> getBatteryByPostcode(@RequestBody GetNameBatteryByPostcodeInput input) {   
         return toSuccessResult(batteryService.getBatteryByPostcode(input), "Successfully");
     }
 
