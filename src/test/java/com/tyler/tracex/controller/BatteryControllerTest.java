@@ -1,9 +1,7 @@
 package com.tyler.tracex.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.tyler.tracex.domain.message.ResponseMessage;
-import com.tyler.tracex.domain.model.addbattery.AddBatteryDetailInput;
 import com.tyler.tracex.domain.model.addbattery.AddBatteryInput;
 import com.tyler.tracex.domain.model.getnamebatterybyrange.GetBatteryNameByPostcodeInput;
 import com.tyler.tracex.domain.model.getnamebatterybyrange.GetBatteryNameByPostcodeOutput;
@@ -22,6 +20,7 @@ import java.net.URL;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,9 +35,7 @@ public class BatteryControllerTest {
     @MockBean
     private BatteryService batteryService;
 
-    private BatteryUtil batteryUtil = new BatteryUtil();
-
-    private Gson gson = new Gson();
+    private final BatteryUtil batteryUtil = new BatteryUtil();
 
     @Test
     public void testCallAddBatteriesApiSuccess() throws Exception {
@@ -48,7 +45,7 @@ public class BatteryControllerTest {
                 new URL("http://localhost:" + port + "/battery").toString(), request, ResponseMessage.class);
         assertEquals("200", response.getBody().getCode());
         assertEquals("Successfully", response.getBody().getMessage());
-        assertEquals(true, response.getBody().isSuccess());
+        assertTrue(response.getBody().isSuccess());
     }
 
     @Test
@@ -63,7 +60,7 @@ public class BatteryControllerTest {
                 new URL("http://localhost:" + port + "/battery/get-battery-by-postcode").toString(), request, ResponseMessage.class);
         assertEquals("200", response.getBody().getCode());
         assertEquals("Successfully", response.getBody().getMessage());
-        assertEquals(true, response.getBody().isSuccess());
+        assertTrue(response.getBody().isSuccess());
         batteryUtil.checkEqualsFuncGetBatteries(expect,
                 new ObjectMapper().convertValue(response.getBody().getData(), GetBatteryNameByPostcodeOutput.class));
     }

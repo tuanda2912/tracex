@@ -1,0 +1,19 @@
+version: '2.2'
+services:
+  mariadb:
+    image: mariadb
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: tracexdb2022
+      MARIADB_DATABASE: tracex
+  tracex:
+    depends_on:
+      - mariadb
+    image: tracex-application:latest
+    ports:
+      - "8080:8080"
+    restart: always
+volumes:
+  db_data:

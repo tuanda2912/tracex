@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -48,7 +47,7 @@ public class BatteryServiceImplTest {
     void testGetBatteriesFunction() {
         GetBatteryNameByPostcodeInput input = batteryUtil.buildGetNameBatteryInput();
         Map<String, Object> mapping = new HashMap<>();
-        mapping.put("TOTAL", BigInteger.valueOf(20l));
+        mapping.put("TOTAL", BigInteger.valueOf(20L));
         mapping.put("AVG", 127.5D);
         when(batteryRepository.getTotalRowAndAvgWatt(input.getFromPostCode(), input.getToPostCode())).thenReturn(mapping);
         Pageable pageable = PageRequest.of(input.getPageIndex(), input.getPageSize(), Sort.by("NAME").ascending());

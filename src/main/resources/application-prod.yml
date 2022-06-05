@@ -5,13 +5,17 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-#      ddl-auto: update
+      ddl-auto: update
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mariadb://localhost:3306/test-node?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8_bin
+    url: jdbc:mariadb://mariadb/tracex?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8_bin
     driverClassName: org.mariadb.jdbc.Driver
     username: root
-    password: ENC(HrwmNpdv5zJ9hUiK6tEw1zNTlCaM53Hd)
+    password: ENC(8hYHqAuIO7usaPzep1r3C8nBZ5v8XxKy)
     hikari:
       idle-timeout: 60000
       maximum-pool-size: 5
+springdoc:
+  api-docs:
+    path: /api-docs
+is-prod: true
