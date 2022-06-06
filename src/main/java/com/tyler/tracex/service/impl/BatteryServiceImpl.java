@@ -6,7 +6,9 @@ import com.tyler.tracex.domain.model.getnamebatterybyrange.GetBatteryNameByPostc
 import com.tyler.tracex.domain.model.getnamebatterybyrange.GetBatteryNameByPostcodeOutput;
 import com.tyler.tracex.repository.BatteryRepository;
 import com.tyler.tracex.service.BatteryService;
+import com.tyler.tracex.util.JsonUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,12 +25,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BatteryServiceImpl implements BatteryService {
 
     private final BatteryRepository batteryRepository;
 
     @Override
     public void addBatteryLIst(AddBatteryInput addBatteryInput) {
+        log.info("Input: {}", JsonUtil.objectToJson(addBatteryInput));
         Assert.isTrue(!CollectionUtils.isEmpty(addBatteryInput.getAddBatteryDetailList()), "Input battery list can not be empty or null");
         List<Battery> batteryList = addBatteryInput.getAddBatteryDetailList().stream().map(batteryDetailInput -> {
             Battery battery = new Battery();
@@ -42,7 +46,9 @@ public class BatteryServiceImpl implements BatteryService {
 
     @Override
     public GetBatteryNameByPostcodeOutput getBatteryByPostcode(GetBatteryNameByPostcodeInput input) {
+        log.info("Input: {}", JsonUtil.objectToJson(input));
         Map<String, Object> mapTotalAndAvg = batteryRepository.getTotalRowAndAvgWatt(input.getFromPostCode(), input.getToPostCode());
+        log.info("getTotalRowAndAvgWatt: {}", JsonUtil.objectToJson(mapTotalAndAvg));
         if(CollectionUtils.isEmpty(mapTotalAndAvg)) {
             return GetBatteryNameByPostcodeOutput.builder()
                     .batteryNameList(null)
@@ -53,10 +59,13 @@ public class BatteryServiceImpl implements BatteryService {
         List<String> nameList = batteryRepository.getBatteryNameByPostCodeRange(input.getFromPostCode(), input.getToPostCode(),
                 PageRequest.of(Objects.isNull(input.getPageIndex()) ? 0 : input.getPageIndex(),
                         Objects.isNull(input.getPageSize()) ? 10 : input.getPageSize(), Sort.by("NAME").ascending()));
-        return GetBatteryNameByPostcodeOutput.builder()
+        log.info("nameList: {}", JsonUtil.objectToJson(nameList));
+        GetBatteryNameByPostcodeOutput output = GetBatteryNameByPostcodeOutput.builder()
                 .batteryNameList(nameList)
                 .total(((BigInteger) mapTotalAndAvg.get("TOTAL")).longValue())
                 .averageWatt((Double) mapTotalAndAvg.get("AVG"))
                 .build();
+        log.info("output: {}", JsonUtil.objectToJson(output));
+        return output;
     }
 }
