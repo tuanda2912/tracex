@@ -1,5 +1,6 @@
 package com.tyler.tracex.service;
 
+import com.tyler.tracex.domain.dto.BatteryDetailInfoDTO;
 import com.tyler.tracex.domain.model.addbattery.AddBatteryInput;
 import com.tyler.tracex.domain.model.getnamebatterybyrange.GetBatteryNameByPostcodeInput;
 import com.tyler.tracex.domain.model.getnamebatterybyrange.GetBatteryNameByPostcodeOutput;
@@ -32,36 +33,35 @@ public class BatteryServiceImplTest {
     @MockBean
     private BatteryRepository batteryRepository;
 
-    BatteryUtil batteryUtil = new BatteryUtil();
-
     @DisplayName("Test Add batteries function")
     @Test
     void testAddBatteries() {
-        AddBatteryInput addBatteryInput = batteryUtil.buildAddBatteryInput();
+        AddBatteryInput addBatteryInput = BatteryUtil.buildAddBatteryInput();
         when(batteryRepository.saveAll(any())).thenReturn(new ArrayList<>());
-        batteryService.addBatteryLIst(addBatteryInput);
+        batteryService.addBatteryList(addBatteryInput);
     }
 
     @DisplayName("Test get batteries function")
     @Test
     void testGetBatteriesFunction() {
-        GetBatteryNameByPostcodeInput input = batteryUtil.buildGetNameBatteryInput();
+        GetBatteryNameByPostcodeInput input = BatteryUtil.buildGetNameBatteryInput();
+        BatteryDetailInfoDTO batteryDetailInfoDTO = new BatteryDetailInfoDTO();
         Map<String, Object> mapping = new HashMap<>();
-        mapping.put("TOTAL", BigInteger.valueOf(20L));
-        mapping.put("AVG", 127.5D);
-        when(batteryRepository.getTotalRowAndAvgWatt(input.getFromPostCode(), input.getToPostCode())).thenReturn(mapping);
+        batteryDetailInfoDTO.setTotal(20L);
+        batteryDetailInfoDTO.setAverageWattCapacity(127.5D);
+        when(batteryRepository.getTotalRowAndAvgWatt(input.getFromPostCode(), input.getToPostCode())).thenReturn(batteryDetailInfoDTO);
         Pageable pageable = PageRequest.of(input.getPageIndex(), input.getPageSize(), Sort.by("NAME").ascending());
         List<String> nameList = List.of("Battery 1", "Battery 2", "Battery 3");
-        GetBatteryNameByPostcodeOutput expect = batteryUtil.buildGetNameBatteryOutput(nameList);
+        GetBatteryNameByPostcodeOutput expect = BatteryUtil.buildGetNameBatteryOutput(nameList);
         when(batteryRepository.getBatteryNameByPostCodeRange(input.getFromPostCode(), input.getToPostCode(), pageable)).thenReturn(nameList);
         GetBatteryNameByPostcodeOutput actual = batteryService.getBatteryByPostcode(input);
-        batteryUtil.checkEqualsFuncGetBatteries(expect, actual);
+        BatteryUtil.checkEqualsFuncGetBatteries(expect, actual);
     }
 
     @DisplayName("Test get batteries function if not found")
     @Test
     void testGetBatteriesFunctionNotFound() {
-        GetBatteryNameByPostcodeInput input = batteryUtil.buildGetNameBatteryInput();
+        GetBatteryNameByPostcodeInput input = BatteryUtil.buildGetNameBatteryInput();
         when(batteryRepository.getTotalRowAndAvgWatt(input.getFromPostCode(), input.getToPostCode())).thenReturn(null);
         GetBatteryNameByPostcodeOutput expect = GetBatteryNameByPostcodeOutput.builder()
                 .total(0L)
@@ -69,7 +69,7 @@ public class BatteryServiceImplTest {
                 .batteryNameList(null)
                 .build();
         GetBatteryNameByPostcodeOutput actual = batteryService.getBatteryByPostcode(input);
-        batteryUtil.checkEqualsFuncGetBatteries(expect, actual);
+        BatteryUtil.checkEqualsFuncGetBatteries(expect, actual);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.tyler.tracex.service.impl;
 
+import com.tyler.tracex.domain.dto.BatteryDetailInfoDTO;
 import com.tyler.tracex.domain.entity.Battery;
 import com.tyler.tracex.domain.model.addbattery.AddBatteryInput;
 import com.tyler.tracex.domain.model.getnamebatterybyrange.GetBatteryNameByPostcodeInput;
@@ -31,7 +32,7 @@ public class BatteryServiceImpl implements BatteryService {
     private final BatteryRepository batteryRepository;
 
     @Override
-    public void addBatteryLIst(AddBatteryInput addBatteryInput) {
+    public void addBatteryList(AddBatteryInput addBatteryInput) {
         log.info("Input: {}", JsonUtil.objectToJson(addBatteryInput));
         Assert.isTrue(!CollectionUtils.isEmpty(addBatteryInput.getAddBatteryDetailList()), "Input battery list can not be empty or null");
         List<Battery> batteryList = addBatteryInput.getAddBatteryDetailList().stream().map(batteryDetailInput -> {
@@ -47,9 +48,9 @@ public class BatteryServiceImpl implements BatteryService {
     @Override
     public GetBatteryNameByPostcodeOutput getBatteryByPostcode(GetBatteryNameByPostcodeInput input) {
         log.info("Input: {}", JsonUtil.objectToJson(input));
-        Map<String, Object> mapTotalAndAvg = batteryRepository.getTotalRowAndAvgWatt(input.getFromPostCode(), input.getToPostCode());
-        log.info("getTotalRowAndAvgWatt: {}", JsonUtil.objectToJson(mapTotalAndAvg));
-        if(CollectionUtils.isEmpty(mapTotalAndAvg)) {
+        BatteryDetailInfoDTO batteryDetailInfoDTO = batteryRepository.getTotalRowAndAvgWatt(input.getFromPostCode(), input.getToPostCode());
+        log.info("getTotalRowAndAvgWatt: {}", JsonUtil.objectToJson(batteryDetailInfoDTO));
+        if(Objects.isNull(batteryDetailInfoDTO)) {
             return GetBatteryNameByPostcodeOutput.builder()
                     .batteryNameList(null)
                     .total(0l)
@@ -62,8 +63,8 @@ public class BatteryServiceImpl implements BatteryService {
         log.info("nameList: {}", JsonUtil.objectToJson(nameList));
         GetBatteryNameByPostcodeOutput output = GetBatteryNameByPostcodeOutput.builder()
                 .batteryNameList(nameList)
-                .total(((BigInteger) mapTotalAndAvg.get("TOTAL")).longValue())
-                .averageWatt((Double) mapTotalAndAvg.get("AVG"))
+                .total(batteryDetailInfoDTO.getTotal())
+                .averageWatt(batteryDetailInfoDTO.getAverageWattCapacity())
                 .build();
         log.info("output: {}", JsonUtil.objectToJson(output));
         return output;

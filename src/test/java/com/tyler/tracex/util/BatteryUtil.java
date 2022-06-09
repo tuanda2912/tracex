@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BatteryUtil {
 
-    public AddBatteryInput buildAddBatteryInput() {
+    public static AddBatteryInput buildAddBatteryInput() {
         AddBatteryInput addBatteryInput = new AddBatteryInput();
         AddBatteryDetailInput addBatteryDetailInputFirst = AddBatteryDetailInput.builder()
                 .name("Battery 1")
@@ -27,7 +27,7 @@ public class BatteryUtil {
         return addBatteryInput;
     }
 
-    public GetBatteryNameByPostcodeInput buildGetNameBatteryInput() {
+    public static GetBatteryNameByPostcodeInput buildGetNameBatteryInput() {
         return GetBatteryNameByPostcodeInput.builder()
                 .fromPostCode(100000)
                 .toPostCode(1000005)
@@ -36,7 +36,7 @@ public class BatteryUtil {
                 .build();
     }
 
-    public GetBatteryNameByPostcodeOutput buildGetNameBatteryOutput(List<String> nameList) {
+    public static GetBatteryNameByPostcodeOutput buildGetNameBatteryOutput(List<String> nameList) {
         return GetBatteryNameByPostcodeOutput.builder()
                 .total(20L)
                 .averageWatt(127.5D)
@@ -44,7 +44,7 @@ public class BatteryUtil {
                 .build();
     }
 
-    public void checkEqualsFuncGetBatteries(GetBatteryNameByPostcodeOutput expect, GetBatteryNameByPostcodeOutput actual) {
+    public static void checkEqualsFuncGetBatteries(GetBatteryNameByPostcodeOutput expect, GetBatteryNameByPostcodeOutput actual) {
         assertEquals(expect.getAverageWatt(), actual.getAverageWatt());
         assertEquals(expect.getTotal(), actual.getTotal());
         assertEquals(expect.getBatteryNameList(), actual.getBatteryNameList());

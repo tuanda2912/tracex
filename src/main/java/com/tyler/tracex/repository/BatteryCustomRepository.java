@@ -1,9 +1,9 @@
 package com.tyler.tracex.repository;
 
-import java.util.Map;
+import com.tyler.tracex.domain.dto.BatteryDetailInfoDTO;
 
 public interface BatteryCustomRepository {
 
-    Map<String, Object> getTotalRowAndAvgWatt(Integer fromPostcode, Integer toPostCode);
+    BatteryDetailInfoDTO getTotalRowAndAvgWatt(Integer fromPostcode, Integer toPostCode);
 
 }

@@ -1,9 +1,7 @@
 package com.tyler.tracex.domain.message;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -12,7 +10,8 @@ import java.io.Serializable;
  * @author tuanda
  */
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseMessage<T> extends BaseMessage implements Serializable {

@@ -7,13 +7,15 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.Objects;
+
 @ControllerAdvice
 public class ControllerExceptionHandler extends BaseController {
 
     @ExceptionHandler({ MethodArgumentNotValidException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<?> handleException(MethodArgumentNotValidException e) {
-        return toExceptionResult(e.getFieldError().getDefaultMessage(), HttpStatus.BAD_REQUEST.value());
+        return toExceptionResult(Objects.requireNonNull(e.getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST.value());
     }
 
     @ExceptionHandler({ IllegalArgumentException.class })

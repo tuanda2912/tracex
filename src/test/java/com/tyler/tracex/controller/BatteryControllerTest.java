@@ -16,6 +16,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
@@ -35,11 +36,9 @@ public class BatteryControllerTest {
     @MockBean
     private BatteryService batteryService;
 
-    private final BatteryUtil batteryUtil = new BatteryUtil();
-
     @Test
     public void testCallAddBatteriesApiSuccess() throws Exception {
-        AddBatteryInput input = batteryUtil.buildAddBatteryInput();
+        AddBatteryInput input = BatteryUtil.buildAddBatteryInput();
         HttpEntity<AddBatteryInput> request = new HttpEntity<>(input, null);
         ResponseEntity<ResponseMessage> response = restTemplate.postForEntity(
                 new URL("http://localhost:" + port + "/battery").toString(), request, ResponseMessage.class);
@@ -50,18 +49,18 @@ public class BatteryControllerTest {
 
     @Test
     public void testCallGetBatteryName() throws Exception {
-        GetBatteryNameByPostcodeInput input = batteryUtil.buildGetNameBatteryInput();
+        GetBatteryNameByPostcodeInput input = BatteryUtil.buildGetNameBatteryInput();
         HttpEntity<GetBatteryNameByPostcodeInput> request = new HttpEntity<>(input, null);
         List<String> nameList = List.of("Battery 1", "Battery 2", "Battery 3");
-        GetBatteryNameByPostcodeOutput expect = batteryUtil.buildGetNameBatteryOutput(nameList);
-        GetBatteryNameByPostcodeOutput outputService = batteryUtil.buildGetNameBatteryOutput(nameList);
+        GetBatteryNameByPostcodeOutput expect = BatteryUtil.buildGetNameBatteryOutput(nameList);
+        GetBatteryNameByPostcodeOutput outputService = BatteryUtil.buildGetNameBatteryOutput(nameList);
         when(batteryService.getBatteryByPostcode(input)).thenReturn(outputService);
         ResponseEntity<ResponseMessage> response = restTemplate.postForEntity(
-                new URL("http://localhost:" + port + "/battery/get-battery-by-postcode").toString(), request, ResponseMessage.class);
+                new URI("http://localhost:" + port + "/battery/get-battery-by-postcode"), request, ResponseMessage.class);
         assertEquals("200", response.getBody().getCode());
         assertEquals("Successfully", response.getBody().getMessage());
         assertTrue(response.getBody().isSuccess());
-        batteryUtil.checkEqualsFuncGetBatteries(expect,
+        BatteryUtil.checkEqualsFuncGetBatteries(expect,
                 new ObjectMapper().convertValue(response.getBody().getData(), GetBatteryNameByPostcodeOutput.class));
     }
 

@@ -6,7 +6,7 @@ import com.tyler.tracex.domain.model.getnamebatterybyrange.GetBatteryNameByPostc
 
 public interface BatteryService {
 
-    void addBatteryLIst(AddBatteryInput input);
+    void addBatteryList(AddBatteryInput input);
 
     GetBatteryNameByPostcodeOutput getBatteryByPostcode(GetBatteryNameByPostcodeInput input);
 
