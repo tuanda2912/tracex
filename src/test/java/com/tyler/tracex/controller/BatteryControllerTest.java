@@ -15,6 +15,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
 import java.net.URL;
@@ -42,7 +43,7 @@ public class BatteryControllerTest {
         HttpEntity<AddBatteryInput> request = new HttpEntity<>(input, null);
         ResponseEntity<ResponseMessage> response = restTemplate.postForEntity(
                 new URL("http://localhost:" + port + "/battery").toString(), request, ResponseMessage.class);
-        assertEquals("200", response.getBody().getCode());
+        assertEquals(200, response.getBody().getCode());
         assertEquals("Successfully", response.getBody().getMessage());
         assertTrue(response.getBody().isSuccess());
     }
@@ -57,7 +58,7 @@ public class BatteryControllerTest {
         when(batteryService.getBatteryByPostcode(input)).thenReturn(outputService);
         ResponseEntity<ResponseMessage> response = restTemplate.postForEntity(
                 new URI("http://localhost:" + port + "/battery/get-battery-by-postcode"), request, ResponseMessage.class);
-        assertEquals("200", response.getBody().getCode());
+        assertEquals(200, response.getBody().getCode());
         assertEquals("Successfully", response.getBody().getMessage());
         assertTrue(response.getBody().isSuccess());
         BatteryUtil.checkEqualsFuncGetBatteries(expect,

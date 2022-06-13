@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 public abstract class BaseController {
 
 
-    protected <T> ResponseEntity<?> toSuccessResult(T data, String successMessage) {
+    protected <T> ResponseEntity<ResponseMessage<T>> toSuccessResult(T data, String successMessage) {
         ResponseMessage<T> message = new ResponseMessage<>();
 
         message.setCode(HttpStatus.OK.value());
@@ -26,7 +26,7 @@ public abstract class BaseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    protected <T> ResponseEntity<?> toExceptionResult(String errorMessage, int code) {
+    protected <T> ResponseEntity<ResponseMessage<T>> toExceptionResult(String errorMessage, int code) {
         ResponseMessage<T> message = new ResponseMessage<>();
 
         message.setSuccess(false);

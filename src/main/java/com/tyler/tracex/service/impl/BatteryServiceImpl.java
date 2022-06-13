@@ -53,7 +53,7 @@ public class BatteryServiceImpl implements BatteryService {
         if(Objects.isNull(batteryDetailInfoDTO)) {
             return GetBatteryNameByPostcodeOutput.builder()
                     .batteryNameList(null)
-                    .total(0l)
+                    .total(0L)
                     .averageWatt(0D)
                     .build();
         }
