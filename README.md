@@ -10,8 +10,8 @@ Just a sample Spring Boot Project for Tracex
 ## Installation
 Install JDK First then Maven. Using the following command to run. You'll need to run mariadb first.
 ````
-mvn clean install
-java -jar target/tracex-1.0.jar
+./gradlew clean build
+java -jar build/libs/tracex-1.0.jar
 ````
 
 ## Docker
